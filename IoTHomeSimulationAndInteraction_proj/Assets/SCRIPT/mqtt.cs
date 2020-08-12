@@ -54,7 +54,7 @@ public class mqtt : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(receivedMsg)
+       if(actionLamp)
         {
             print("ID:" + cmd.id + cmd.action);
 
@@ -64,10 +64,17 @@ public class mqtt : MonoBehaviour
             print("FILE:" + msg);
             print("Id: " + command.id);
             print("Cmd: " + command.cmd);*/
-            receivedMsg = false;
+            actionLamp = false;
             lampController.GetComponent<LampController>().switchLamp(cmd.id, cmd.action);
 
 
+        }
+
+       if(actionBlind)
+        {
+            actionBlind = false;
+            print("ID:" + cmd.id + Int32.Parse(cmd.action));
+            blindController.GetComponent<BlindController>().move(cmd.id, Int32.Parse(cmd.action));
         }
     }
 
@@ -124,8 +131,18 @@ public class mqtt : MonoBehaviour
         cmd = JsonUtility.FromJson<Command>(msg);
 
         print("ID:" + cmd.id+cmd.action);
-        receivedMsg = true;
-        
+
+        if (cmd.id <= 12)
+        {
+            print("lampadine");
+            actionLamp = true;
+        }
+
+        if (cmd.id >= 13)
+        {
+            print("persiane");
+            actionBlind = true;
+        }
 
         /*//List<Command> cmds = JsonUtility.FromJson<List<Command>>(msg);
         //cmds.Add(new Command());

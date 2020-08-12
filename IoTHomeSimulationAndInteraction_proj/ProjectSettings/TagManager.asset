@@ -15,6 +15,9 @@ TagManager:
   - lampadina stanza
   - blindController
   - 3
+  - 12
+  - 15
+  - 13
   layers:
   - Default
   - TransparentFX
