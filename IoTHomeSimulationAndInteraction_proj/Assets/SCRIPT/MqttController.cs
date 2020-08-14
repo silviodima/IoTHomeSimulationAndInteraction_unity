@@ -15,7 +15,7 @@ using System.Runtime.Serialization.Json;
 using System.Numerics;
 using System.Linq;
 
-public class mqtt : MonoBehaviour
+public class mqttController : MonoBehaviour
 {
     public MqttClient client;
     public string brokerHostname = "127.0.0.1";
@@ -81,6 +81,7 @@ public class mqtt : MonoBehaviour
     [Serializable]
     public class Command
     {
+        public int type;
         public int id;
         public string cmd;
         public string action;
@@ -132,16 +133,26 @@ public class mqtt : MonoBehaviour
 
         print("ID:" + cmd.id+cmd.action);
 
-        if (cmd.id <= 12)
+        if (cmd.type == 0)
         {
-            print("lampadine");
-            actionLamp = true;
+            //lampadine o fornelli
+            if (cmd.id <= 9 || cmd.id>=14 && cmd.id<=17 )
+            {
+                print("lampadine");
+                actionLamp = true;
+            }
+
+            //persiane
+            if (cmd.id >= 10 && cmd.id<=13 || cmd.id==22)
+            {
+                print("persiane");
+                actionBlind = true;
+            }
         }
 
-        if (cmd.id >= 13)
+        if(cmd.type==1)
         {
-            print("persiane");
-            actionBlind = true;
+            print("sensori");
         }
 
  
@@ -182,7 +193,7 @@ foreach (Command cmd in cmds)
 
 }
 
-private void Publish(string _topic, string msg)
+public void Publish(string _topic, string msg)
 {
 client.Publish(
    _topic, System.Text.Encoding.UTF8.GetBytes(msg),

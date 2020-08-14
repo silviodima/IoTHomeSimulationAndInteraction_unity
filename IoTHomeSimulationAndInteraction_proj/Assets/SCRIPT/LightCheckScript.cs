@@ -6,12 +6,21 @@ using UnityEngine;
 public class LightCheckScript : MonoBehaviour
 {
     public RenderTexture lightCheckTexture;
+    private GameObject mqtt;
+    private string msg;
     public float lightLevel;
-    public int light;
-    // Start is called befor1e the first frame update
+    // public int light;
+
+    [Serializable]
+    public class Command
+    {
+        public int id, type;
+        public float info;
+    }
+    // Start is called before the first frame update
     void Start()
     {
-        
+        mqtt = GameObject.FindGameObjectWithTag("mqtt");
     }
 
     // Update is called once per frame
@@ -33,11 +42,32 @@ public class LightCheckScript : MonoBehaviour
         Color32[] colors = temp2DTexture.GetPixels32();
 
         lightLevel = 0;
-        for (int i = 0; i < colors.Length;i++)
+        for (int i = 0; i < colors.Length; i++)
         {
+            //brightness formula
             lightLevel += (0.2126f * colors[i].r) + (0.7152f * colors[i].g) + (0.0722f * colors[i].b);
         }
 
-        print(lightLevel);
+       // print(lightLevel);
+
+        if (lightLevel < 1761270)
+            print("notte:"+lightLevel);
+
+        if (lightLevel > 6372500 && lightLevel<6372999)
+            print("mezzogiorno");
+
+        if (lightLevel > 1761270 && lightLevel<6372500)
+        {
+            print("mattina" + lightLevel);
+            Command cmd = new Command();
+            cmd.type = 0;
+            cmd.id = 33;
+            cmd.info = lightLevel;
+            print("{\"type\":" + cmd.type + ",\"id\":" + cmd.id + ",\"lightlevel\": " + cmd.info + "}");
+            msg = JsonUtility.ToJson(cmd);
+            print("Opla " + msg);
+          //mqtt.GetComponent<mqttController>().Publish("test", msg);
+
+        }
     }
 }

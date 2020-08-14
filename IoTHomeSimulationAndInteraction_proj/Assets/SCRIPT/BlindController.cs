@@ -23,9 +23,9 @@ public class BlindController : MonoBehaviour
         call = false;
         rooms = new GameObject[4];
         //vanno riassegnati gli id
-        rooms[0] = GameObject.FindGameObjectWithTag("blindBath");
+        rooms[0] = GameObject.FindGameObjectWithTag("12");
         rooms[1] = GameObject.FindGameObjectWithTag("13");
-        rooms[2] = GameObject.FindGameObjectWithTag("blindRoom");
+        rooms[2] = GameObject.FindGameObjectWithTag("22");
         rooms[3] = GameObject.FindGameObjectWithTag("blindLounge");
 
         initialScale = new float[4];

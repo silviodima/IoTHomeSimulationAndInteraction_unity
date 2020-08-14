@@ -18,6 +18,23 @@ TagManager:
   - 12
   - 15
   - 13
+  - 1
+  - 2
+  - 5
+  - 4
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 14
+  - 16
+  - 17
+  - 18
+  - 19
+  - 22
+  - mqtt
   layers:
   - Default
   - TransparentFX
