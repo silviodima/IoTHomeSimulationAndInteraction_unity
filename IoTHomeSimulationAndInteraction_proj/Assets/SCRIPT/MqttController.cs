@@ -15,7 +15,7 @@ using System.Runtime.Serialization.Json;
 using System.Numerics;
 using System.Linq;
 
-public class mqttController : MonoBehaviour
+public class MqttController : MonoBehaviour
 {
     public MqttClient client;
     public string brokerHostname = "127.0.0.1";
@@ -25,10 +25,13 @@ public class mqttController : MonoBehaviour
     public TextAsset certificate;
     // listen on all the Topic
     static string subTopic = "test";
-    private GameObject lampController, blindController;
-    private bool actionLamp, actionBlind;
+    private GameObject lampController, blindController, lightSensor, TVscreen;
+    private bool actionLamp, actionBlind, actionSensor, actionTV;
     private bool receivedMsg;
-    private Command cmd;
+    private Command cmd; 
+    private InitCommand initCmd;
+        
+    private string msg;
 
    
     
@@ -36,10 +39,14 @@ public class mqttController : MonoBehaviour
     void Start()
     {
         receivedMsg = false;
+        actionSensor = false;
         actionLamp = false;
         actionBlind = false;
+        actionTV = false;
         lampController = GameObject.FindGameObjectWithTag("lampController");
         blindController = GameObject.FindGameObjectWithTag("blindController");
+        lightSensor = GameObject.FindGameObjectWithTag("lightSensor");
+        TVscreen = GameObject.FindGameObjectWithTag("TVController");
         if (brokerHostname != null && userName != null && password != null)
         {
             Debug.Log("connecting to " + brokerHostname + ":" + brokerPort);
@@ -57,13 +64,6 @@ public class mqttController : MonoBehaviour
        if(actionLamp)
         {
             print("ID:" + cmd.id + cmd.action);
-
-            /*string msg = File.ReadAllText(Application.dataPath + "/command.json");
-            receivedMsg = false;
-            Command command = JsonUtility.FromJson<Command>(msg);
-            print("FILE:" + msg);
-            print("Id: " + command.id);
-            print("Cmd: " + command.cmd);*/
             actionLamp = false;
             lampController.GetComponent<LampController>().switchLamp(cmd.id, cmd.action);
 
@@ -76,6 +76,32 @@ public class mqttController : MonoBehaviour
             print("ID:" + cmd.id + Int32.Parse(cmd.action));
             blindController.GetComponent<BlindController>().move(cmd.id, Int32.Parse(cmd.action));
         }
+
+       if(actionSensor)
+        {
+            actionSensor = false;
+            lightSensor.GetComponent<LightSensor>().publishSensor();
+        }
+
+       if(actionTV)
+        {
+            actionTV = false;
+            if (cmd.cmd.Equals("switch"))
+            {
+                TVscreen.GetComponent<TVController>().switchTV(cmd.id, cmd.action);
+            }
+
+            if(cmd.cmd.Equals("channel"))
+            {
+                TVscreen.GetComponent<TVController>().switchChannel(cmd.id, Int32.Parse(cmd.action));
+            }
+
+            if(cmd.cmd.Equals("volume"))
+            {
+                //print("cambio volume");
+                TVscreen.GetComponent<TVController>().changeVolume(cmd.id, Int32.Parse(cmd.action));
+            }
+        }
     }
 
     [Serializable]
@@ -83,19 +109,12 @@ public class mqttController : MonoBehaviour
     {
         public int type;
         public int id;
-        public string cmd;
-        public string action;
+        public string cmd, component, action;
     }
 
-    [Serializable]
-    public class RootCommand
+    public class InitCommand
     {
-        public List<Command> cmdList;
-
-        public List<Command> getCmdList()
-        {
-            return this.cmdList;
-        }
+        public int type;
     }
 
 
@@ -118,6 +137,16 @@ public class mqttController : MonoBehaviour
         {
             Debug.LogError("Connection error: " + e);
         }
+
+        //Richiesta di inizializzazione
+        initCmd = new InitCommand
+        {
+            type = 1
+        };
+
+        msg = JsonUtility.ToJson(initCmd);
+        Publish("test", msg);
+
     }
     public static bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
     {
@@ -131,8 +160,7 @@ public class mqttController : MonoBehaviour
         Debug.Log("Received message from " + e.Topic + " : " + msg);
         cmd = JsonUtility.FromJson<Command>(msg);
 
-        print("ID:" + cmd.id+cmd.action);
-
+        //se cmd.type == 0, è richiesto l'invio di comandi
         if (cmd.type == 0)
         {
             //lampadine o fornelli
@@ -148,48 +176,20 @@ public class mqttController : MonoBehaviour
                 print("persiane");
                 actionBlind = true;
             }
+
+            if(cmd.id==20 || cmd.id==21)
+            {
+                print("TV");
+                actionTV = true;
+            }
         }
 
+        //se cmd.type ==  1, è richiesto l'invio dei dati dei sensori
         if(cmd.type==1)
         {
             print("sensori");
+            actionSensor = true;
         }
-
- 
-        /*//List<Command> cmds = JsonUtility.FromJson<List<Command>>(msg);
-        //cmds.Add(new Command());
-        RootCommand cmds = new RootCommand();
-        cmds.cmds = JsonUtility.FromJson<Command[]>(msg);
-
-
-        print("Num comandi:" + cmds.cmds.Length);*/
-
-/*  foreach (Command cmd in cmds)
-  {
-      print("id: " + cmd.id);
-      print("comando: " + cmd.cmd);
-      print("azione: " + cmd.action);
-  }
-
- Command[] cmds = JsonHelper.FromJson<Command>(msg);
-
- if (cmds == null) print("mammt");
-foreach (Command cmd in cmds)
-{
-   print("id: " + cmd.id);
-   print("comando: " + cmd.cmd);
-   print("azione: " + cmd.action);
-}*/
-
-/* RootCommand cmds = JsonUtility.FromJson<RootCommand>(msg);
- print("COMANDI: " + cmds.getCmdList().Count);
-
- /*foreach (Command cmd in cmds)
- {
-     print("id: " + cmd.id);
-     print("comando: " + cmd.cmd);
-     print("azione: " + cmd.action);
- }*/
 
 }
 
@@ -201,32 +201,5 @@ client.Publish(
 }
 
 
-public static class JsonHelper
-{
-public static T[] FromJson<T>(string json)
-{
-   Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
-   return wrapper.Items;
-}
 
-public static string ToJson<T>(T[] array)
-{
-   Wrapper<T> wrapper = new Wrapper<T>();
-   wrapper.Items = array;
-   return JsonUtility.ToJson(wrapper);
-}
-
-public static string ToJson<T>(T[] array, bool prettyPrint)
-{
-   Wrapper<T> wrapper = new Wrapper<T>();
-   wrapper.Items = array;
-   return JsonUtility.ToJson(wrapper, prettyPrint);
-}
-
-[Serializable]
-private class Wrapper<T>
-{
-   public T[] Items;
-}
-}
 }

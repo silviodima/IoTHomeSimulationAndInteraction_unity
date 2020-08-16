@@ -35,6 +35,10 @@ TagManager:
   - 19
   - 22
   - mqtt
+  - lightSensor
+  - 20
+  - TVController
+  - 21
   layers:
   - Default
   - TransparentFX
@@ -44,7 +48,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - blind
   - 
   - 
   - 
