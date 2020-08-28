@@ -63,10 +63,17 @@ public class MqttController : MonoBehaviour
     {
        if(actionLamp)
         {
-            print("ID:" + cmd.id + cmd.action);
+            //print("ID:" + cmd.id + cmd.action);
             actionLamp = false;
-            lampController.GetComponent<LampController>().switchLamp(cmd.id, cmd.action);
+            if (cmd.cmd.Equals("switch"))
+            {
+                lampController.GetComponent<LampController>().switchLamp(cmd.id, cmd.action);
+            }
 
+            if(cmd.cmd.Equals("power") && (cmd.id == 1 || cmd.id == 6 || cmd.id == 9))
+            {
+                lampController.GetComponent<LampController>().powerLamp(cmd.id, Int32.Parse(cmd.action));
+            }
 
         }
 
@@ -85,6 +92,7 @@ public class MqttController : MonoBehaviour
 
        if(actionTV)
         {
+            print("CMD:" + cmd.cmd + "\nACTION:" + cmd.action);
             actionTV = false;
             if (cmd.cmd.Equals("switch"))
             {

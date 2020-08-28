@@ -6,7 +6,7 @@ using UnityEngine.Video;
 
 public class TVController : MonoBehaviour
 {
-    public VideoClip channel1, channel2, channel3, channel4;
+    public VideoClip channel1, channel2, channel3, channel4, channel5;
    // private VideoPlayer tv;
     // Start is called before the first frame update
     void Start()
@@ -23,13 +23,14 @@ public class TVController : MonoBehaviour
 
     public void switchTV(int id, string action)
     {
+        print("switch tv");
         GameObject tv = GameObject.FindGameObjectWithTag(id.ToString());
-        if (action.Equals("on"))
+        if (action.Equals("true"))
         {
             tv.GetComponent<VideoPlayer>().Play();
         }
 
-        if (action.Equals("off"))
+        if (action.Equals("false"))
         {
             tv.GetComponent<VideoPlayer>().Stop();
         }
@@ -71,6 +72,14 @@ public class TVController : MonoBehaviour
 
 
             }
+
+            if (action == 5)
+            {
+                player.clip = channel5;
+                player.Play();
+
+
+            }
         }
 
     }
@@ -80,7 +89,7 @@ public class TVController : MonoBehaviour
         GameObject tv = GameObject.FindGameObjectWithTag(id.ToString());
         VideoPlayer player = tv.GetComponent<VideoPlayer>();
 
-        print("BOH" + player.audioTrackCount);
+        //print("BOH" + player.audioTrackCount);
         player.SetDirectAudioVolume( 0, action/10f);
 
 

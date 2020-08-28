@@ -21,10 +21,31 @@ public class LampController : MonoBehaviour
     public void switchLamp(int id, string action)
     {
         lamp = GameObject.FindGameObjectWithTag(id.ToString());
-        if (action.Equals("on"))
+        if (action.Equals("true"))
+        {
             lamp.GetComponent<Light>().enabled = true;
+        }
 
-        else lamp.GetComponent<Light>().enabled = false;
+        else if (action.Equals("false"))
+        {
+            lamp.GetComponent<Light>().enabled = false;
+        }
     }
 
-}
+    public void powerLamp(int id, int action)
+    {
+        lamp = GameObject.FindGameObjectWithTag(id.ToString());
+
+        if (lamp.GetComponent<Light>().enabled)
+        {
+            lamp.GetComponent<Light>().intensity = action / 10;
+        }
+
+        else
+        {
+            print("luce spenta");
+        }
+
+    }
+
+    }

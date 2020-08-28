@@ -12,7 +12,7 @@ public class BlindController : MonoBehaviour
     //lunghezza che dovrà avere la persiana, lunghezza iniziale, lunghezza massima che può avere
     private float[] finalScale, initialScale;
     //le costanti vengono ottenute dall'equazione: scale.y iniziale + percentuale*x = scale.y ideale per chiudere al massimo la persiana
-    public static readonly float[] blindLength = { 0.055f, 0.055f, 0.055f, 0.085f };
+    public static readonly float[] blindLength = { 0.060f, 0.060f, 0.060f, 0.090f };
     private GameObject[] rooms;
     private float temperature;
     private Time time;
@@ -26,7 +26,7 @@ public class BlindController : MonoBehaviour
         rooms[0] = GameObject.FindGameObjectWithTag("12");
         rooms[1] = GameObject.FindGameObjectWithTag("13");
         rooms[2] = GameObject.FindGameObjectWithTag("22");
-        rooms[3] = GameObject.FindGameObjectWithTag("blindLounge");
+        rooms[3] = GameObject.FindGameObjectWithTag("10");
 
         initialScale = new float[4];
         initialScale[0] = rooms[0].transform.localScale.y;
@@ -103,18 +103,17 @@ public class BlindController : MonoBehaviour
             }
         }
 
-        if(blind.transform.localScale.y<firstScale + length * constLenght)
-        {
-                blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y - 0.001f, blind.transform.position.z);
-                blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y + 0.002f, blind.transform.localScale.z);
-        }
+            if (blind.transform.localScale.y < firstScale + length * constLenght)
+            {
+                blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y - 0.002f, blind.transform.position.z);
+                blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y + 0.004f, blind.transform.localScale.z);
+            }
 
-        else
-        {
-            blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y + 0.001f, blind.transform.position.z);
-            blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y - 0.002f, blind.transform.localScale.z);
-        }
-
+            else
+            {
+                blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y + 0.002f, blind.transform.position.z);
+                blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y - 0.004f, blind.transform.localScale.z);
+            }
     }
 
 }
