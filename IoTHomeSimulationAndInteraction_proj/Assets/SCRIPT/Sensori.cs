@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightSensor : MonoBehaviour
+public class Sensori : MonoBehaviour
 {
     public RenderTexture soggiorno, stanza, cucina, bagno, ingresso;
     //public RenderTexture soggiornoLightTexture;
@@ -13,7 +13,7 @@ public class LightSensor : MonoBehaviour
     private float[] lightLevel;
     private RenderTexture[] textures, tmpTextures, previous;
     private Texture2D[] tmp2Dtextures;
-    private string DAELIMINARE;
+    private Collider cameraCollider, ingressoCollider;
     //private float lightLevel;
     // private const float DARK = 2876222f, PENUMBRA = 3082577f, LIGHT_ON = 6331760f, LIGHTON_BLINDOFF = 6370659f;
 
@@ -49,6 +49,8 @@ public class LightSensor : MonoBehaviour
         msg = new string[5];
 
         mqtt = GameObject.FindGameObjectWithTag("mqtt");
+        cameraCollider = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Collider>();
+        ingressoCollider = GameObject.FindGameObjectWithTag("ingressoCollider").GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -121,11 +123,11 @@ public class LightSensor : MonoBehaviour
            }*/
     }
 
-    public void publishSensor()
+    public void getLightSensor()
     {
         toSend = new toJson();
         toSend.type = 2;
-        toSend.sensore = new string[5];
+        toSend.sensore = new string[10];
         for (int i = 0; i < textures.Length; i++)
         {
             tmpTextures[i] = RenderTexture.GetTemporary(textures[i].width, textures[i].height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
@@ -213,12 +215,48 @@ public class LightSensor : MonoBehaviour
          string toJson = JsonHelper.ToJson(msg, true);
          print("" + toJson);
          mqtt.GetComponent<MqttController>().Publish("test", toJson);*/
-        string toJson = JsonUtility.ToJson(toSend);
-        mqtt.GetComponent<MqttController>().Publish("test", toJson); 
+         getMovementSensor();
 
     }
 
-    public static class JsonHelper
+    public void getMovementSensor()
+    {
+        for(int i =5; i<10;i++)
+        {
+            Command cmd = new Command();
+            // cmd.valore = value[i];
+            if (CameraController.movementValues[i-5] == 1)
+                cmd.valore = 1;
+
+            else cmd.valore = 0;
+            cmd.descrizione = "movimento";
+            switch(i)
+                {
+                case (5): cmd.locale = "soggiorno";
+                    break;
+                case (6):
+                    cmd.locale = "stanza";
+                    break;
+                case (7):
+                    cmd.locale = "cucina";
+                    break;
+                case (8):
+                    cmd.locale = "bagno";
+                    break;
+                case (9):
+                    cmd.locale = "ingresso";
+                    break;
+            }
+
+            toSend.sensore[i] = JsonUtility.ToJson(cmd);
+
+        }
+
+        string toJson = JsonUtility.ToJson(toSend);
+        mqtt.GetComponent<MqttController>().Publish("test", toJson);
+    }
+
+  /*  public static class JsonHelper
 {
     public static T[] FromJson<T>(string json)
     {
@@ -245,5 +283,5 @@ public class LightSensor : MonoBehaviour
     {
         public T[] sensori;
     }
-}
+}*/
 }

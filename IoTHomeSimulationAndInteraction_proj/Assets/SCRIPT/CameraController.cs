@@ -13,13 +13,14 @@ public class CameraController : MonoBehaviour
 
     private float yaw = 0.0f;
     private float pitch = 0.0f;
+    public static float[] movementValues;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        movementValues = new float[5];
     }
     void FixedUpdate()
-
     {
         //
         float moverHorizontal = Input.GetAxis("Horizontal");
@@ -47,6 +48,54 @@ public class CameraController : MonoBehaviour
 
         //transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("soggiornoCollider"))
+        {
+            movementValues[0] = 1;
+        }
+        if (other.CompareTag("stanzaCollider"))
+        {
+            movementValues[1] = 1;
+        }
+        if (other.CompareTag("cucinaCollider"))
+        {
+            movementValues[2] = 1;
+        }
+        if (other.CompareTag("bagnoCollider"))
+        {
+            movementValues[3] = 1;
+        }
+        if (other.CompareTag("ingressoCollider"))
+        {
+            movementValues[4] = 1;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("soggiornoCollider"))
+        {
+            movementValues[0] = 0;
+        }
+        if (other.CompareTag("stanzaCollider"))
+        {
+            movementValues[1] = 0;
+        }
+        if (other.CompareTag("cucinaCollider"))
+        {
+            movementValues[2] = 0;
+        }
+        if (other.CompareTag("bagnoCollider"))
+        {
+            movementValues[3] = 0;
+        }
+        if (other.CompareTag("ingressoCollider"))
+        {
+            movementValues[4] = 0;
+        }
     }
 
 }

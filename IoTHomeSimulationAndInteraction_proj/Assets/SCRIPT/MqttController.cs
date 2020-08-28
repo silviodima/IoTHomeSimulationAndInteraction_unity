@@ -25,7 +25,7 @@ public class MqttController : MonoBehaviour
     public TextAsset certificate;
     // listen on all the Topic
     static string subTopic = "test";
-    private GameObject lampController, blindController, lightSensor, TVscreen;
+    private GameObject lampController, blindController, sensori, TVscreen;
     private bool actionLamp, actionBlind, actionSensor, actionTV;
     private bool receivedMsg;
     private Command cmd; 
@@ -45,7 +45,7 @@ public class MqttController : MonoBehaviour
         actionTV = false;
         lampController = GameObject.FindGameObjectWithTag("lampController");
         blindController = GameObject.FindGameObjectWithTag("blindController");
-        lightSensor = GameObject.FindGameObjectWithTag("lightSensor");
+        sensori = GameObject.FindGameObjectWithTag("sensor");
         TVscreen = GameObject.FindGameObjectWithTag("TVController");
         if (brokerHostname != null && userName != null && password != null)
         {
@@ -87,7 +87,7 @@ public class MqttController : MonoBehaviour
        if(actionSensor)
         {
             actionSensor = false;
-            lightSensor.GetComponent<LightSensor>().publishSensor();
+            sensori.GetComponent<Sensori>().getLightSensor();
         }
 
        if(actionTV)

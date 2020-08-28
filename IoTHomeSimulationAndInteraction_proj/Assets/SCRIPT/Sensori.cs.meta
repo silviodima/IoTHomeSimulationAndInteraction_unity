@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6d9d6e0a043328a45a524b82d007d07a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - soggiorno: {fileID: 8400000, guid: 1a6771a75e58ddf42b230e1a5942036e, type: 2}
+  - stanza: {fileID: 8400000, guid: 59c8a92bc49144449af3af203eb11a06, type: 2}
+  - cucina: {fileID: 8400000, guid: 32b1ff2239c0b5b4aa294ebeec91592a, type: 2}
+  - bagno: {fileID: 8400000, guid: 343d96e68863eb64195298031d9e7804, type: 2}
+  - ingresso: {fileID: 8400000, guid: 4059b7760c96fa443a5d70dd9ed4f00d, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

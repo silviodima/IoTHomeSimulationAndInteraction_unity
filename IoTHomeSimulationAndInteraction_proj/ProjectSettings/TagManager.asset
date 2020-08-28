@@ -39,6 +39,12 @@ TagManager:
   - 20
   - TVController
   - 21
+  - sensor
+  - ingressoCollider
+  - cucinaCollider
+  - bagnoCollider
+  - stanzaCollider
+  - soggiornoCollider
   layers:
   - Default
   - TransparentFX
