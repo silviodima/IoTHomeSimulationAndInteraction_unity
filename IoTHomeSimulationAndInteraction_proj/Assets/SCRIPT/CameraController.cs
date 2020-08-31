@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -13,12 +14,15 @@ public class CameraController : MonoBehaviour
 
     private float yaw = 0.0f;
     private float pitch = 0.0f;
+    //array di float che indica in quale stanza si trova la telecamera (1 se c'è in quella stanza, 0 altrimenti)
     public static float[] movementValues;
+    public static bool moving;
 
     void Start()
-    {
+    { 
         rb = GetComponent<Rigidbody>();
         movementValues = new float[5];
+        moving = false;
     }
     void FixedUpdate()
     {
@@ -47,7 +51,7 @@ public class CameraController : MonoBehaviour
         pitch -= speedV * Input.GetAxis("Mouse Y");
 
         //transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-
+        isMoving();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -96,6 +100,21 @@ public class CameraController : MonoBehaviour
         {
             movementValues[4] = 0;
         }
+    }
+
+    public bool isMoving()
+    {
+        if (this.GetComponent<Rigidbody>().velocity.magnitude > 0.01f)
+        {
+            moving = true;
+        }
+
+        else
+        {
+            moving = false;
+        }
+
+        return moving;
     }
 
 }

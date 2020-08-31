@@ -25,8 +25,8 @@ public class MqttController : MonoBehaviour
     public TextAsset certificate;
     // listen on all the Topic
     static string subTopic = "test";
-    private GameObject lampController, blindController, sensori, TVscreen;
-    private bool actionLamp, actionBlind, actionSensor, actionTV;
+    private GameObject lampController, blindController, sensori, TVscreen, conditionerController;
+    private bool actionLamp, actionBlind, actionSensor, actionTV, actionConditioner;
     private bool receivedMsg;
     private Command cmd; 
     private InitCommand initCmd;
@@ -43,10 +43,13 @@ public class MqttController : MonoBehaviour
         actionLamp = false;
         actionBlind = false;
         actionTV = false;
+        actionConditioner = false;
         lampController = GameObject.FindGameObjectWithTag("lampController");
         blindController = GameObject.FindGameObjectWithTag("blindController");
         sensori = GameObject.FindGameObjectWithTag("sensor");
         TVscreen = GameObject.FindGameObjectWithTag("TVController");
+        conditionerController = GameObject.FindGameObjectWithTag("conditionerController");
+
         if (brokerHostname != null && userName != null && password != null)
         {
             Debug.Log("connecting to " + brokerHostname + ":" + brokerPort);
@@ -108,6 +111,21 @@ public class MqttController : MonoBehaviour
             {
                 //print("cambio volume");
                 TVscreen.GetComponent<TVController>().changeVolume(cmd.id, Int32.Parse(cmd.action));
+            }
+        }
+
+       if(actionConditioner)
+        {
+            actionConditioner = false;
+            if (cmd.cmd.Equals("switch"))
+            {
+                conditionerController.GetComponent<CondizionatoreController>().switchConditioner(cmd.id, cmd.action);
+            }
+
+            if (cmd.cmd.Equals("temp"))
+            {
+                //print("cambio volume");
+                conditionerController.GetComponent<CondizionatoreController>().changeTemp(cmd.id, Int32.Parse(cmd.action));
             }
         }
     }
@@ -185,7 +203,16 @@ public class MqttController : MonoBehaviour
                 actionBlind = true;
             }
 
-            if(cmd.id==20 || cmd.id==21)
+            //condizionatori
+            if (cmd.id == 18 || cmd.id == 19)
+            {
+                print("condizionatori");
+                actionConditioner = true;
+            }
+
+
+            //TV
+            if (cmd.id==20 || cmd.id==21)
             {
                 print("TV");
                 actionTV = true;

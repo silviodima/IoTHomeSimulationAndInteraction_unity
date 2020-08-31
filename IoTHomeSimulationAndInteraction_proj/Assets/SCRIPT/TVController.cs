@@ -7,12 +7,38 @@ using UnityEngine.Video;
 public class TVController : MonoBehaviour
 {
     public VideoClip channel1, channel2, channel3, channel4, channel5;
-   // private VideoPlayer tv;
+    private VideoClip[] lastChannel;
+    public static bool[] isOn = { false, false };
+    public static float[] volumes;
+
+    private VideoPlayer playerSoggiorno, playerStanza;
+
+    // private VideoPlayer tv;
     // Start is called before the first frame update
     void Start()
     {
+        /*
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        VA AGGIUSTATO IL MANTENIMENTO DELLO STATO DI SIMULAIONE IN SIMULAZIONE??????????????????'
+        */
         //tv = GetComponent<VideoPlayer>();
-      //tv.Play();
+        //tv.Play();
+        GameObject tvSoggiorno = GameObject.FindGameObjectWithTag("20");
+        GameObject tvStanza = GameObject.FindGameObjectWithTag("21");
+         playerSoggiorno = tvSoggiorno.GetComponent<VideoPlayer>();
+         playerStanza = tvStanza.GetComponent<VideoPlayer>();
+        lastChannel = new VideoClip[2];
+        //soggiorno
+        lastChannel[0] = playerSoggiorno.clip;
+        //stanza
+        lastChannel[1] = playerStanza.clip;
+
+
+        //    playerSoggiorno.clip = lastChannel[0];
+        //    playerStanza.clip = lastChannel[1];
+        volumes = new float[2];
+        volumes[0] = playerSoggiorno.GetDirectAudioVolume(0);
+        volumes[1] = playerStanza.GetDirectAudioVolume(0);
     }
 
     // Update is called once per frame
@@ -25,14 +51,24 @@ public class TVController : MonoBehaviour
     {
         print("switch tv");
         GameObject tv = GameObject.FindGameObjectWithTag(id.ToString());
+        VideoPlayer player = tv.GetComponent<VideoPlayer>();
+        //int per capire di quale tv bisogna riprendere lo stato
+        int room;
+        //0 per la tv del soggiorno, 1 per quella della stanza
+        if (id == 20) room = 0;
+        else room = 1;
         if (action.Equals("true"))
         {
-            tv.GetComponent<VideoPlayer>().Play();
+            isOn[room] = true;
+            player.clip = lastChannel[room];
+            player.Play();
         }
 
         if (action.Equals("false"))
         {
-            tv.GetComponent<VideoPlayer>().Stop();
+            isOn[room] = false;
+            player.clip = lastChannel[room];
+            player.Stop();
         }
 
     }
@@ -41,6 +77,10 @@ public class TVController : MonoBehaviour
     {
         GameObject tv = GameObject.FindGameObjectWithTag(id.ToString());
         VideoPlayer player = tv.GetComponent<VideoPlayer>();
+        //int per capire di quale tv bisogna salvare lo stato
+        int room;
+        if (id == 20) room = 0;
+        else room = 1;
         if (player.isPlaying)
         {
             print("OK: CANALE" + action);
@@ -48,6 +88,7 @@ public class TVController : MonoBehaviour
             {
                 player.clip = channel1;
                 player.Play();
+                lastChannel[room] = channel1;
 
 
             }
@@ -55,6 +96,7 @@ public class TVController : MonoBehaviour
             {
                 player.clip = channel2;
                 player.Play();
+                lastChannel[room] = channel2;
 
 
             }
@@ -62,6 +104,7 @@ public class TVController : MonoBehaviour
             {
                 player.clip = channel3;
                 player.Play();
+                lastChannel[room] = channel3;
 
 
             }
@@ -69,6 +112,7 @@ public class TVController : MonoBehaviour
             {
                 player.clip = channel4;
                 player.Play();
+                lastChannel[room] = channel4;
 
 
             }
@@ -77,6 +121,8 @@ public class TVController : MonoBehaviour
             {
                 player.clip = channel5;
                 player.Play();
+                lastChannel[room] = channel5;
+
 
 
             }
@@ -91,7 +137,8 @@ public class TVController : MonoBehaviour
 
         //print("BOH" + player.audioTrackCount);
         player.SetDirectAudioVolume( 0, action/10f);
-
+        volumes[0] = playerSoggiorno.GetDirectAudioVolume(0);
+        volumes[1] = playerStanza.GetDirectAudioVolume(0);
 
 
     }

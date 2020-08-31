@@ -45,6 +45,9 @@ TagManager:
   - bagnoCollider
   - stanzaCollider
   - soggiornoCollider
+  - textCondSoggiorno
+  - textCondStanza
+  - conditionerController
   layers:
   - Default
   - TransparentFX

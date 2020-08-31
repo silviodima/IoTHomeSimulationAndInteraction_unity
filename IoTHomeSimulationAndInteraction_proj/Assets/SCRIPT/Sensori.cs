@@ -127,7 +127,7 @@ public class Sensori : MonoBehaviour
     {
         toSend = new toJson();
         toSend.type = 2;
-        toSend.sensore = new string[10];
+        toSend.sensore = new string[15];
         for (int i = 0; i < textures.Length; i++)
         {
             tmpTextures[i] = RenderTexture.GetTemporary(textures[i].width, textures[i].height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
@@ -252,36 +252,137 @@ public class Sensori : MonoBehaviour
 
         }
 
+        getNoiseSensor();
+    }
+/*per quanto riguarda il rumore, avevo pensato a:
+25 : camera in movimento || condizionatore acceso (questo vale solo per le stanze che ce l'hanno ovviamente) || tv con volume max 5 (per le stanze che ce l'hanno)
+50: 2 condizioni fra (camera in movimento, condizionatore acceso, tv con volume max 5)
+75: tutte e 3 le condizioni precedenti
+100: tv con volume da 6 in su, indipendentemente da camera e condizionatori*/
+    public void getNoiseSensor()
+    {
+        //stiamo riempiendo l'array sensori[]: le celle da 10 a 15 identificano i valori associati al sensore di rumore
+        //in particolare: 10 soggiorno, 11 stanza, 12 cucina , 13 bagno, 14 ingresso
+        for (int i = 10; i < 15; i++)
+        {
+            Command cmd = new Command();
+            cmd.descrizione = "rumore";
+            cmd.valore = 0;
+            //tutto tace: camera ferma, tv soggiorno e stanza spente, condizionatori soggiorno e stanza spenti=0
+            if(!CameraController.moving && !TVController.isOn[0] && !TVController.isOn[1] && !CondizionatoreController.isOn[0] && !CondizionatoreController.isOn[1])
+            {
+                cmd.valore = 0;
+
+            }
+
+            //la camera si muove: scorriamo l'array movementValue per capire in quale stanza ci troviamo
+           if(CameraController.moving)
+            {
+                for (int j = 0; j < CameraController.movementValues.Length; j++)
+                {
+                    //scorriamo l'array movementvalues e rintracciamo quale delle celle è uguale a 1 (j: 0 soggiorno, 1 stanza, 2 cucina, 3 bagno, 4 ingresso)
+                    //la condizione dopo l'AND serve a capire in quale stanza ci troviamo, confrontando i valori di i-10 e j (i e j: 10 e 0 soggiorno, 11 e 1 stanza, 12 e 2 cucina, 13 e 3 bagno, 14 e 4 ingresso)
+                    //identificata la stanza, il rumore varrà almeno 25 in quella stanza
+                    if (CameraController.movementValues[j] == 1 && i-10== j)
+                        cmd.valore += 25;
+                }
+            }
+
+           //se i = 10, stiamo considerando il soggiorno
+           if(i==10)
+            {
+                //se tv soggiorno accesa e ha un volume tra 0 e 0.4: rumore almeno 25
+                if (TVController.isOn[0] && TVController.volumes[0] < 0.6 && TVController.volumes[0] != 0)
+                {
+                    cmd.valore += 25;
+                }
+
+                //se condizionatore accesso: rumore, almeno 25
+                if (CondizionatoreController.isOn[0])
+                {
+                    cmd.valore += 25;
+                }
+            }
+
+            //se i = 11, stiamo considerando la stanza
+            if (i==11)
+            {
+                //se tv stanza accesa e ha un volume tra 0 e 0.4: rumore almeno 25
+                if (TVController.isOn[1] && TVController.volumes[1] < 0.6 && TVController.volumes[1] != 0) cmd.valore += 25;
+
+                //se condizionatore accesso: rumore, almeno 25
+                if (CondizionatoreController.isOn[1])
+                {
+                    cmd.valore += 25;
+                }
+            }
+
+
+            switch (i)
+            {
+                case (10):
+                    {
+                        //volume > 8: 100
+                        if (TVController.isOn[0] && TVController.volumes[0] > 0.6)
+                        {
+                            cmd.valore = 100;
+                        }
+                        cmd.locale = "soggiorno";
+                        break;
+                    }
+                case (11):
+                    {
+                        //volume > 8: 100
+                        if (TVController.isOn[1] && TVController.volumes[1] > 0.6)
+                        {
+                            cmd.valore = 100;
+                        }
+                        cmd.locale = "stanza";
+                        break;
+                    }
+                case (12):
+                    cmd.locale = "cucina";
+                    break;
+                case (13):
+                    cmd.locale = "bagno";
+                    break;
+                case (14):
+                    cmd.locale = "ingresso";
+                    break;
+            }
+        toSend.sensore[i] = JsonUtility.ToJson(cmd);
+
+        }
         string toJson = JsonUtility.ToJson(toSend);
         mqtt.GetComponent<MqttController>().Publish("test", toJson);
     }
 
-  /*  public static class JsonHelper
-{
-    public static T[] FromJson<T>(string json)
-    {
-        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
-        return wrapper.sensori;
-    }
+    /*  public static class JsonHelper
+  {
+      public static T[] FromJson<T>(string json)
+      {
+          Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(json);
+          return wrapper.sensori;
+      }
 
-    public static string ToJson<T>(T[] array)
-    {
-        Wrapper<T> wrapper = new Wrapper<T>();
-        wrapper.sensori = array;
-        return JsonUtility.ToJson(wrapper);
-    }
+      public static string ToJson<T>(T[] array)
+      {
+          Wrapper<T> wrapper = new Wrapper<T>();
+          wrapper.sensori = array;
+          return JsonUtility.ToJson(wrapper);
+      }
 
-    public static string ToJson<T>(T[] array, bool prettyPrint)
-    {
-        Wrapper<T> wrapper = new Wrapper<T>();
-        wrapper.sensori = array;
-        return JsonUtility.ToJson(wrapper, prettyPrint);
-    }
+      public static string ToJson<T>(T[] array, bool prettyPrint)
+      {
+          Wrapper<T> wrapper = new Wrapper<T>();
+          wrapper.sensori = array;
+          return JsonUtility.ToJson(wrapper, prettyPrint);
+      }
 
-    [Serializable]
-    private class Wrapper<T>
-    {
-        public T[] sensori;
-    }
-}*/
+      [Serializable]
+      private class Wrapper<T>
+      {
+          public T[] sensori;
+      }
+  }*/
 }
