@@ -41,7 +41,7 @@ public class TemperaturaController : MonoBehaviour
                // print("diffusion: " + diffusion);
             }
 
-            Diffusion(CondizionatoreController.airSoggiorno);
+          //  Diffusion(CondizionatoreController.airSoggiorno);
             
             for(int i = 1; i<diffusion; i++)
             {
@@ -58,11 +58,16 @@ public class TemperaturaController : MonoBehaviour
 
     void Diffusion(GameObject air)
     {
-        if (air.CompareTag("airSoggiorno"))
-        {
-            print("OH");
-            while (air.transform.position.x < 3)
-                air.transform.position = new Vector3(air.transform.position.x - 0.01f, air.transform.position.y, air.transform.position.z);
-        }
+        print("CE STAMO");
+
+   
+        //if (air.CompareTag("airSoggiorno"))
+        //{
+        //    print("OH");
+        //    if (air.transform.position.x < -2.9)
+        //    {
+        //        air.transform.position = new Vector3(air.transform.position.x + 0.0001f, air.transform.position.y, air.transform.position.z);
+        //    }
+        //}
     }
 }

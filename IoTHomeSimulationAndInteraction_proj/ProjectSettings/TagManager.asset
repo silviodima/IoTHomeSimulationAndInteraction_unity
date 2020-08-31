@@ -48,6 +48,9 @@ TagManager:
   - textCondSoggiorno
   - textCondStanza
   - conditionerController
+  - temperaturaController
+  - airSoggiorno
+  - airStanza
   layers:
   - Default
   - TransparentFX

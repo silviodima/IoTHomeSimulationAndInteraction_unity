@@ -6,16 +6,24 @@ using UnityEngine.UI;
 public class CondizionatoreController : MonoBehaviour
 {
     public Text soggiorno, stanza;
+    //file audio che simula il rumore del condiziontore
     public AudioClip rumore;
     //array di boolean di taglia 2 per tener conto dello stato on/off dei condizionatori
     public static bool[] isOn = { false, false };
     //array di float di taglia 2 per tener conto della temperatura dei condizionatori
     public static float[] lastTemperature = { 20, 20 };
-    private Object myPrefabSphere;
+    //booleano che viene settato a true quando si accende uno dei condizionatori (e quindi la temperatura può cambiare)
     private bool checkTemperature;
+    
     private GameObject temperaturaController;
 
-    public static GameObject airSoggiorno, airStanza;
+    public static Animator animatorSoggiorno, animatorStanza;
+
+    //oggetti che nella scena simuleranno la diffusione 
+    public GameObject airSoggiorno, airStanza;
+
+    //vettori che salveranno la posizione iniziale degli oggetti precedenti
+    private Vector3 airSoggiornoPos, airStanzaPos;
 
 
     private AudioSource rumoreCondSoggiorno, rumoreCondStanza;
@@ -25,8 +33,11 @@ public class CondizionatoreController : MonoBehaviour
         checkTemperature = false;
         rumoreCondSoggiorno = GameObject.FindGameObjectWithTag("18").GetComponent<AudioSource>();
         rumoreCondStanza = GameObject.FindGameObjectWithTag("19").GetComponent<AudioSource>();
-        myPrefabSphere = Resources.Load<GameObject>("Sphere") as GameObject;
         temperaturaController = GameObject.FindGameObjectWithTag("temperaturaController");
+
+        airSoggiornoPos = airSoggiorno.transform.position;
+        airStanzaPos = airStanza.transform.position;
+
     }
 
     // Update is called once per frame
@@ -34,6 +45,7 @@ public class CondizionatoreController : MonoBehaviour
     {
         if(checkTemperature)
         {
+            checkTemperature = false;
             temperaturaController.GetComponent<TemperaturaController>().checkTemperature();
         }
     }
@@ -50,8 +62,16 @@ public class CondizionatoreController : MonoBehaviour
                 soggiorno.text = lastTemperature[0] + "°C";
                 rumoreCondSoggiorno.Play();
 
-                airSoggiorno = (GameObject) Instantiate(myPrefabSphere, soggiorno.transform.position, Quaternion.identity);
-                airSoggiorno.tag = "airSoggiorno";
+                animatorSoggiorno = airSoggiorno.GetComponent<Animator>();
+                animatorSoggiorno.enabled = true;
+                animatorSoggiorno.speed = 0.2f;
+                animatorSoggiorno.SetBool("diffusion", true);
+
+                //airSoggiorno = (GameObject) Instantiate(myPrefabSphere, soggiorno.transform.position, Quaternion.identity);
+                //airSoggiorno.tag = "airSoggiorno";
+                //airSoggiorno.AddComponent<Animator>();
+                //airSoggiorno.AddComponent<Animation>().AddClip();
+
                 checkTemperature = true;
             }
 
@@ -61,7 +81,12 @@ public class CondizionatoreController : MonoBehaviour
                 isOn[1] = true;
                 stanza.text = lastTemperature[1] + "°C";
                 rumoreCondStanza.Play();
-                airStanza = (GameObject) Instantiate(myPrefabSphere, stanza.transform.position, Quaternion.identity);
+
+                animatorStanza = airStanza.GetComponent<Animator>();
+                animatorStanza.speed = 0.2f;
+                animatorStanza.SetBool("diffusion", true);
+
+                // airStanza = (GameObject) Instantiate(myPrefabSphere, stanza.transform.position, Quaternion.identity);
                 checkTemperature = true;
 
             }
@@ -77,7 +102,8 @@ public class CondizionatoreController : MonoBehaviour
                 rumoreCondSoggiorno.Stop();
                 checkTemperature = false;
 
-                Destroy(airSoggiorno);
+                animatorSoggiorno.enabled = false;
+                airSoggiorno.transform.position = new Vector3(-8, 2, 3);
             }
 
             else if (id == 19)
@@ -87,7 +113,7 @@ public class CondizionatoreController : MonoBehaviour
                 rumoreCondStanza.Stop();
                 checkTemperature = false;
 
-                Destroy(airStanza);
+                airStanza.transform.position = airStanzaPos;
 
             }
         }
