@@ -11,7 +11,7 @@ public class CondizionatoreController : MonoBehaviour
     //array di boolean di taglia 2 per tener conto dello stato on/off dei condizionatori
     public static bool[] isOn = { false, false };
     //array di float di taglia 2 per tener conto della temperatura dei condizionatori
-    public static float[] lastTemperature = { 20, 20 };
+    public static float[] conditionerTemperature = { 20, 20 };
     //booleano che viene settato a true quando si accende uno dei condizionatori (e quindi la temperatura può cambiare)
     private bool checkTemperature;
     
@@ -20,7 +20,7 @@ public class CondizionatoreController : MonoBehaviour
     public static Animator animatorSoggiorno, animatorStanza;
 
     //oggetti che nella scena simuleranno la diffusione 
-    public GameObject airSoggiorno, airStanza;
+    public static GameObject airSoggiorno, airStanza;
 
     //vettori che salveranno la posizione iniziale degli oggetti precedenti
     private Vector3 airSoggiornoPos, airStanzaPos;
@@ -35,9 +35,14 @@ public class CondizionatoreController : MonoBehaviour
         rumoreCondStanza = GameObject.FindGameObjectWithTag("19").GetComponent<AudioSource>();
         temperaturaController = GameObject.FindGameObjectWithTag("temperaturaController");
 
+        airSoggiorno = GameObject.FindGameObjectWithTag("airSoggiorno");
+        airStanza = GameObject.FindGameObjectWithTag("airStanza");
+
         airSoggiornoPos = airSoggiorno.transform.position;
         airStanzaPos = airStanza.transform.position;
 
+        animatorSoggiorno = airSoggiorno.GetComponent<Animator>();
+        animatorStanza = airStanza.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -59,19 +64,12 @@ public class CondizionatoreController : MonoBehaviour
             {
                 //index 0 per condizionatore del soggiorno
                 isOn[0] = true;
-                soggiorno.text = lastTemperature[0] + "°C";
+                //aggiornamento della temperatura mostrata sul condizionatore
+                soggiorno.text = conditionerTemperature[0] + "°C";
+                //sound del condizionatore
                 rumoreCondSoggiorno.Play();
 
-                animatorSoggiorno = airSoggiorno.GetComponent<Animator>();
-                animatorSoggiorno.enabled = true;
-                animatorSoggiorno.speed = 0.2f;
-                animatorSoggiorno.SetBool("diffusion", true);
-
-                //airSoggiorno = (GameObject) Instantiate(myPrefabSphere, soggiorno.transform.position, Quaternion.identity);
-                //airSoggiorno.tag = "airSoggiorno";
-                //airSoggiorno.AddComponent<Animator>();
-                //airSoggiorno.AddComponent<Animation>().AddClip();
-
+                //andiamo a fare il check sulla temperatura per aggiornare le temperature degli ambienti
                 checkTemperature = true;
             }
 
@@ -79,10 +77,10 @@ public class CondizionatoreController : MonoBehaviour
             {
                 //index 1 per condizionatore della stanza
                 isOn[1] = true;
-                stanza.text = lastTemperature[1] + "°C";
+                stanza.text = conditionerTemperature[1] + "°C";
                 rumoreCondStanza.Play();
 
-                animatorStanza = airStanza.GetComponent<Animator>();
+                animatorStanza.enabled = true;
                 animatorStanza.speed = 0.2f;
                 animatorStanza.SetBool("diffusion", true);
 
@@ -101,9 +99,11 @@ public class CondizionatoreController : MonoBehaviour
                 soggiorno.text = "-";
                 rumoreCondSoggiorno.Stop();
                 checkTemperature = false;
+                animatorSoggiorno.SetBool("diffusion", false);
 
-                animatorSoggiorno.enabled = false;
-                airSoggiorno.transform.position = new Vector3(-8, 2, 3);
+                airSoggiorno.transform.position = airSoggiornoPos;
+               
+               //airSoggiorno.transform.position = new Vector3(-8, 2, 3);
             }
 
             else if (id == 19)
@@ -129,9 +129,15 @@ public class CondizionatoreController : MonoBehaviour
             //condizionatore del soggiorno
             if(id == 18)
             {
+                checkTemperature = false;
                 soggiorno.text = action + "°C";
-                lastTemperature[0] = action;
+                conditionerTemperature[0] = action;
+
+                animatorSoggiorno.SetBool("diffusion", false);
+
+                airSoggiorno.transform.position = airSoggiornoPos;
                 checkTemperature = true;
+
 
             }
 
@@ -147,7 +153,7 @@ public class CondizionatoreController : MonoBehaviour
             if (id == 19)
             {
                 stanza.text = action + "°C";
-                lastTemperature[1] = action;
+                conditionerTemperature[1] = action;
                 checkTemperature = true;
 
             }
