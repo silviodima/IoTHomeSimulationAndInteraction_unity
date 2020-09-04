@@ -127,7 +127,7 @@ public class Sensori : MonoBehaviour
     {
         toSend = new toJson();
         toSend.type = 2;
-        toSend.sensore = new string[15];
+        toSend.sensore = new string[20];
         for (int i = 0; i < textures.Length; i++)
         {
             tmpTextures[i] = RenderTexture.GetTemporary(textures[i].width, textures[i].height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
@@ -351,6 +351,44 @@ public class Sensori : MonoBehaviour
                     break;
             }
         toSend.sensore[i] = JsonUtility.ToJson(cmd);
+
+        }
+
+        getTemperatureSensor();
+    }
+
+    public void getTemperatureSensor()
+    {
+        for (int i = 15; i < 20; i++)
+        {
+            Command cmd = new Command();
+           
+            cmd.descrizione = "temperatura";
+            switch (i)
+            {
+                case (15):
+                    cmd.valore = TemperaturaController.roomTemperature[0];
+                    cmd.locale = "soggiorno";
+                    break;
+                case (16):
+                    cmd.valore = TemperaturaController.roomTemperature[1];
+                    cmd.locale = "stanza";
+                    break;
+                case (17):
+                    cmd.valore = TemperaturaController.roomTemperature[2];
+                    cmd.locale = "cucina";
+                    break;
+                case (18):
+                    cmd.valore = TemperaturaController.roomTemperature[3];
+                    cmd.locale = "bagno";
+                    break;
+                case (19):
+                    cmd.valore = TemperaturaController.roomTemperature[4];
+                    cmd.locale = "ingresso";
+                    break;
+            }
+
+            toSend.sensore[i] = JsonUtility.ToJson(cmd);
 
         }
         string toJson = JsonUtility.ToJson(toSend);

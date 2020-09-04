@@ -1001,8 +1001,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209780364}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 52.4}
+  m_LocalRotation: {x: -0, y: -0.6875837, z: -0, w: 0.72610515}
+  m_LocalPosition: {x: 0, y: 0, z: -7.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1264193044}
@@ -1012,10 +1012,10 @@ RectTransform:
   - {fileID: 287837293}
   m_Father: {fileID: 828784247}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -86.878006, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 48.94, y: 13.6}
+  m_AnchoredPosition: {x: 1.4, y: 17.59}
   m_SizeDelta: {x: 1102.5, y: 470}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &209780366
@@ -2545,7 +2545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &574449535
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2940,7 +2940,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &590741564
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4428,10 +4428,10 @@ Animator:
   m_GameObject: {fileID: 751162852}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 466dbb7b73e11f049a94ccbf247c0252, type: 2}
+  m_Controller: {fileID: 9100000, guid: c09d093f828b124419d6ec301ee09ec7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -4443,21 +4443,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 616096475}
   m_PrefabAsset: {fileID: 0}
---- !u!111 &751162858
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 751162852}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 08050b9868e336e4bb7a50063761d4a8, type: 2}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1001 &758210419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4933,7 +4918,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &807882128
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5316,7 +5301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &860602729
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5487,7 +5472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &882572053
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5587,22 +5572,22 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
@@ -5617,7 +5602,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 27d12b4eed05e4743b02293841d9177d,
         type: 3}
@@ -7657,7 +7642,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 170d3ab36d6030345a979080fb49121a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -8160,7 +8145,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1441944039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8480,17 +8465,17 @@ PrefabInstance:
     - target: {fileID: 4740585770434270134, guid: cea21df8b0aad364eb8a985a15c7d5b0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 39.37
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4740585770434270134, guid: cea21df8b0aad364eb8a985a15c7d5b0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.154954
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4740585770434270134, guid: cea21df8b0aad364eb8a985a15c7d5b0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.356569
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4740585770434270134, guid: cea21df8b0aad364eb8a985a15c7d5b0,
         type: 3}
@@ -8787,16 +8772,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625650676}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -41.38}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: -44.33}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
   m_Children: []
   m_Father: {fileID: 992111945}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.06, y: -3.14}
+  m_AnchoredPosition: {x: -2.83, y: -3.14}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1659540848
@@ -9712,7 +9697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2022502090
 Transform:
   m_ObjectHideFlags: 0
@@ -10240,6 +10225,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Porta ingresso
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4643ca0905369ca4285f40bfdcc0cf39,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4643ca0905369ca4285f40bfdcc0cf39, type: 3}
