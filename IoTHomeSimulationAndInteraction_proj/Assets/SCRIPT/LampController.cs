@@ -20,6 +20,8 @@ public class LampController : MonoBehaviour
 
     public void switchLamp(int id, string action)
     {
+        print("sto quzzzzzzzz");
+
         lamp = GameObject.FindGameObjectWithTag(id.ToString());
         if (action.Equals("true"))
         {

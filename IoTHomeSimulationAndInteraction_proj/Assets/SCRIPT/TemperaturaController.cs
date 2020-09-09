@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class TemperaturaController : MonoBehaviour
 {
     public Text soggiorno, stanza, cucina, bagno, ingresso;
-    public static float[] roomTemperature = { 10, 23, 23, 23, 23 };
+    public static int[] roomTemperature = { 10, 23, 23, 23, 23 };
     private float diffusion, incremento, positionDifference, counter;
     private float[]initialPositionAir, finalPositionAir;
     private bool checkPositionSogg, checkPositionStan, tempPlus, resetTempSogg;
@@ -49,7 +49,7 @@ public class TemperaturaController : MonoBehaviour
     {
         if (checkPositionSogg && CondizionatoreController.isOn[0] && CondizionatoreController.conditionerTemperature[0]!=roomTemperature[0])
         {
-          print("ora cambia");
+          //print("ora cambia");
           checkAirPosition(CondizionatoreController.airSoggiorno, room);
         }
 
@@ -183,7 +183,7 @@ public class TemperaturaController : MonoBehaviour
     }
     void checkAirPosition(GameObject air, int room)
     {
-        print("room" + room + "diffusion" + diffusion + "incremento" + incremento+"position"+positionDifference);
+        //print("room" + room + "diffusion" + diffusion + "incremento" + incremento+"position"+positionDifference);
         //se dobbiamo controllare la posizione della palla nel soggiorno
         if(diffusion!=0 && CondizionatoreController.isOn[room])
         {

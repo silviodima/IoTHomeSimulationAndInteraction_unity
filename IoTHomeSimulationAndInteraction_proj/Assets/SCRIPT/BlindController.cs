@@ -12,31 +12,34 @@ public class BlindController : MonoBehaviour
     //lunghezza che dovrà avere la persiana, lunghezza iniziale, lunghezza massima che può avere
     private float[] finalScale, initialScale;
     //le costanti vengono ottenute dall'equazione: scale.y iniziale + percentuale*x = scale.y ideale per chiudere al massimo la persiana
-    public static readonly float[] blindLength = { 0.060f, 0.060f, 0.060f, 0.090f };
+    public static readonly float[] blindLength = { 0.060f, 0.060f, 0.060f, 0.090f, 0.090f };
     private GameObject[] rooms;
     private float temperature;
     private Time time;
     private int id_cmd, action_cmd;
-    private bool call;
+    public static bool call;
     void Start()
     {
         call = false;
-        rooms = new GameObject[4];
+        rooms = new GameObject[5];
         //vanno riassegnati gli id
         rooms[0] = GameObject.FindGameObjectWithTag("12");
         rooms[1] = GameObject.FindGameObjectWithTag("13");
         rooms[2] = GameObject.FindGameObjectWithTag("22");
         rooms[3] = GameObject.FindGameObjectWithTag("10");
+        rooms[4] = GameObject.FindGameObjectWithTag("11");
 
-        initialScale = new float[4];
+        initialScale = new float[5];
         initialScale[0] = rooms[0].transform.localScale.y;
         initialScale[1] = rooms[1].transform.localScale.y;
         initialScale[2] = rooms[2].transform.localScale.y;
         initialScale[3] = rooms[3].transform.localScale.y;
+        initialScale[4] = rooms[4].transform.localScale.y;
+
 
         //finalScale[i] rappresenta la scale.y dell'i-esimo gameObject rintracciato
         //la costante moltiplicativa x viene ottenuta dall'equazione: scale.y iniziale + valore slider*x = scale.y ideale per chiudere al massimo la persiana
-      
+
 
 
 
@@ -103,17 +106,24 @@ public class BlindController : MonoBehaviour
             }
         }
 
-            if (blind.transform.localScale.y < firstScale + length * constLenght)
-            {
-                blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y - 0.002f, blind.transform.position.z);
-                blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y + 0.004f, blind.transform.localScale.z);
-            }
+        if (blind.transform.localScale.y < firstScale + length * constLenght)
+        {
+            blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y - 0.002f, blind.transform.position.z);
+            blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y + 0.004f, blind.transform.localScale.z);
+        }
 
-            else
-            {
-                blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y + 0.002f, blind.transform.position.z);
-                blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y - 0.004f, blind.transform.localScale.z);
-            }
+        else if (blind.transform.localScale.y > firstScale + length * constLenght)
+
+        {
+            blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y + 0.002f, blind.transform.position.z);
+            blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y - 0.004f, blind.transform.localScale.z);
+        }
+
+        else
+        {
+            print("false"); call = false;
+        }
+
     }
 
 }

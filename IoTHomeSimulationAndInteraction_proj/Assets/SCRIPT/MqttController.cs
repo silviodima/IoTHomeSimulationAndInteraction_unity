@@ -9,23 +9,21 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 //librerie di supporto a mqtt
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-using TMPro;
-using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Numerics;
-using System.Linq;
+using Unity.Collections;
+using Unity.Jobs;
 
 public class MqttController : MonoBehaviour
 {
     public MqttClient client;
+    //public string brokerHostname = "192.168.1.112";
     public string brokerHostname = "127.0.0.1";
     public int brokerPort = 1883;
     public string userName = "test";
     public string password = "test";
     public TextAsset certificate;
     // listen on all the Topic
-    static string subTopic = "test";
-    private GameObject lampController, blindController, sensori, TVscreen, conditionerController;
+    static string subTopic = "web";
+    private GameObject lampController, blindController, sensori, TVscreen, conditionerController, blindSoggiorno, blindStanza;
     private bool actionLamp, actionBlind, actionSensor, actionTV, actionConditioner;
     private bool receivedMsg;
     private Command cmd; 
@@ -33,8 +31,8 @@ public class MqttController : MonoBehaviour
         
     private string msg;
 
-   
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +47,9 @@ public class MqttController : MonoBehaviour
         sensori = GameObject.FindGameObjectWithTag("sensor");
         TVscreen = GameObject.FindGameObjectWithTag("TVController");
         conditionerController = GameObject.FindGameObjectWithTag("conditionerController");
+        blindSoggiorno = GameObject.FindGameObjectWithTag("10");
+        blindStanza = GameObject.FindGameObjectWithTag("22");
+        
 
         if (brokerHostname != null && userName != null && password != null)
         {
@@ -61,33 +62,82 @@ public class MqttController : MonoBehaviour
 
     }
 
+    public struct job: IJobParallelFor
+    {
+        public int id; 
+        public int action;
+        [ReadOnly]
+        public GameObject blind;
+
+        public void Execute()
+        {
+            //GameObject blindController = GameObject.FindGameObjectWithTag("blindController");
+            //blindController.GetComponent<BlindController>().move(id, action);
+        }
+
+        public void Execute(int index)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    private void faiCose(GameObject blind, int id, int action) //doveva essere jobHandle
+    {
+        job j = new job();
+        j.id = id;
+        j.action = action;
+        j.blind = blind;
+        //return j.Schedule();
+    }
+
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
        if(actionLamp)
         {
             //print("ID:" + cmd.id + cmd.action);
-            actionLamp = false;
             if (cmd.cmd.Equals("switch"))
             {
+                print("sto qua");
                 lampController.GetComponent<LampController>().switchLamp(cmd.id, cmd.action);
             }
 
             if(cmd.cmd.Equals("power") && (cmd.id == 1 || cmd.id == 6 || cmd.id == 9))
             {
+                //action sarà 0,25,50,75,100
                 lampController.GetComponent<LampController>().powerLamp(cmd.id, Int32.Parse(cmd.action));
             }
-
+            actionLamp = false;
         }
 
-       if(actionBlind)
+        if (actionBlind)
         {
             actionBlind = false;
-            print("ID:" + cmd.id + Int32.Parse(cmd.action));
+            print("ID:" + cmd.action);
+            //Task.Factory.StartNew(() => blindController.GetComponent<BlindController>().move(10, Int32.Parse("100")));
             blindController.GetComponent<BlindController>().move(cmd.id, Int32.Parse(cmd.action));
+            //new Thread(delegate ()
+            //{
+            //    blindController.GetComponent<BlindController>().move(cmd.id, Int32.Parse(cmd.action));
+            //}).Start();
+            //NativeList<JobHandle> list = new NativeList<JobHandle>(Allocator.Temp);
+            //JobHandle jobHandle = faiCose(cmd.id, cmd.action);
+            //list.Add(jobHandle);
+            //jobHandle.CompleteAll(list);
+            //list.Dispose();
+            //NativeList<JobHandle> jobHandleList = new NativeList<JobHandle>(Allocator.Temp);
+            ////JobHandle jobHandle = faiCose(blindController, cmd.id, Int32.Parse(cmd.action));
+
+            ////jobHandleList.Add(jobHandle);
+            //JobHandle.CompleteAll(jobHandleList);
+            //jobHandleList.Dispose();
+
+
+
         }
 
-       if(actionSensor)
+        if (actionSensor)
         {
             actionSensor = false;
             sensori.GetComponent<Sensori>().getLightSensor();
@@ -130,6 +180,7 @@ public class MqttController : MonoBehaviour
         }
     }
 
+
     [Serializable]
     public class Command
     {
@@ -171,7 +222,7 @@ public class MqttController : MonoBehaviour
         };
 
         msg = JsonUtility.ToJson(initCmd);
-        Publish("test", msg);
+        Publish("unity", msg);
 
     }
     public static bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -199,7 +250,7 @@ public class MqttController : MonoBehaviour
             //persiane
             if (cmd.id >= 10 && cmd.id<=13 || cmd.id==22)
             {
-                print("persiane");
+                print("persiane"+cmd.action);
                 actionBlind = true;
             }
 

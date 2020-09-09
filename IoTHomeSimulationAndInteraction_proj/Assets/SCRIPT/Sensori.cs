@@ -23,14 +23,14 @@ public class Sensori : MonoBehaviour
     public class Command
     {
         public string locale, descrizione;
-        public float valore;
+        public int valore;
     }
 
     [Serializable]
     public class toJson
     {
         public int type;
-        public string[] sensore;
+        public Command[] sensore;
     }
     // Start is called before the first frame update
     void Start()
@@ -127,7 +127,7 @@ public class Sensori : MonoBehaviour
     {
         toSend = new toJson();
         toSend.type = 2;
-        toSend.sensore = new string[20];
+        toSend.sensore = new Command[20];
         for (int i = 0; i < textures.Length; i++)
         {
             tmpTextures[i] = RenderTexture.GetTemporary(textures[i].width, textures[i].height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
@@ -153,7 +153,7 @@ public class Sensori : MonoBehaviour
                 //formula per il calcolo della luminosità
                 lightLevel[i] += (0.2126f * colors[j].r) + (0.7152f * colors[j].g) + (0.0722f * colors[j].b);
                 Command cmd = new Command();
-                cmd.valore = lightLevel[i];
+                cmd.valore = (int) lightLevel[i];
 
                 switch (i)
                 {
@@ -202,7 +202,7 @@ public class Sensori : MonoBehaviour
                 cmd.descrizione = "luce";
 
                 // print("{\"type\":" + cmd.type + ",\"id\":" + cmd.id + ",\"lightlevel\": " + cmd.info + "}");
-                toSend.sensore[i] = JsonUtility.ToJson(cmd);
+                toSend.sensore[i] = cmd;
 
             }
 
@@ -248,7 +248,7 @@ public class Sensori : MonoBehaviour
                     break;
             }
 
-            toSend.sensore[i] = JsonUtility.ToJson(cmd);
+            toSend.sensore[i] = cmd;
 
         }
 
@@ -350,7 +350,7 @@ public class Sensori : MonoBehaviour
                     cmd.locale = "ingresso";
                     break;
             }
-        toSend.sensore[i] = JsonUtility.ToJson(cmd);
+            toSend.sensore[i] = cmd;
 
         }
 
@@ -388,11 +388,15 @@ public class Sensori : MonoBehaviour
                     break;
             }
 
-            toSend.sensore[i] = JsonUtility.ToJson(cmd);
+            toSend.sensore[i] = cmd;
 
         }
         string toJson = JsonUtility.ToJson(toSend);
-        mqtt.GetComponent<MqttController>().Publish("test", toJson);
+        foreach (Command sensore in toSend.sensore)
+        {
+            print("SENSORE"+sensore.ToString());
+        }
+        mqtt.GetComponent<MqttController>().Publish("unity", toJson);
     }
 
     /*  public static class JsonHelper
