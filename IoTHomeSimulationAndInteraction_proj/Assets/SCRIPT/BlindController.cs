@@ -108,8 +108,8 @@ public class BlindController : MonoBehaviour
 
         if (blind.transform.localScale.y < firstScale + length * constLenght)
         {
-            blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y - 0.002f, blind.transform.position.z);
-            blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y + 0.004f, blind.transform.localScale.z);
+            blind.transform.position = new Vector3(blind.transform.position.x, blind.transform.position.y - 0.004f, blind.transform.position.z);
+            blind.transform.localScale = new Vector3(blind.transform.localScale.x, blind.transform.localScale.y + 0.008f, blind.transform.localScale.z);
         }
 
         else if (blind.transform.localScale.y > firstScale + length * constLenght)
@@ -121,7 +121,7 @@ public class BlindController : MonoBehaviour
 
         else
         {
-            print("false"); call = false;
+           call = false;
         }
 
     }

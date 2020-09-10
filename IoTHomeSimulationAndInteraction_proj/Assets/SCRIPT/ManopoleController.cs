@@ -20,6 +20,15 @@ public class ManopoleController : MonoBehaviour
 
     private void Start()
     {
+
+        mqtt = GameObject.FindGameObjectWithTag("mqtt");
+
+    }
+
+    void Update()
+    {
+        //monitoraggio del comportamento dei fornelli: se vengono spente/accese dalla web app, poniamo il booleano a false/true 
+        //in modo da sincronizzare il comportamento dalla web app e della simulazione
         if (fornello1.GetComponent<Light>().enabled)
             onFornello1 = true;
         else if (!fornello1.GetComponent<Light>().enabled)
@@ -42,12 +51,6 @@ public class ManopoleController : MonoBehaviour
         else if (!fornello4.GetComponent<Light>().enabled)
             onFornello4 = false;
 
-        mqtt = GameObject.FindGameObjectWithTag("mqtt");
-
-    }
-
-    void Update()
-    {
         Command cmd = new Command();
         cmd.type = 0;
         //Check if Mouse Button is pressed
@@ -56,7 +59,6 @@ public class ManopoleController : MonoBehaviour
             //Raycast from mouse cursor pos
             RaycastHit rayCastHit;
             Ray rayCast = Camera.main.ScreenPointToRay(Input.mousePosition);
-            print(""+rayCast);
             if (Physics.Raycast(rayCast, out rayCastHit))
             {
                 //se hai cliccato su Manopola fornello 1

@@ -24,6 +24,25 @@ public class InterruttoriController : MonoBehaviour
 
     private void Start()
     {
+       
+
+        mqtt = GameObject.FindGameObjectWithTag("mqtt");
+
+        dimmerIntensityIngresso = lampadinaIngresso.GetComponent<Light>().intensity;
+        dimmerIngresso.text = "" + dimmerIntensityIngresso*10;
+
+        dimmerIntensitySoggiorno = lampadinaSoggiorno.GetComponent<Light>().intensity;
+        dimmerSoggiorno.text = "" + dimmerIntensitySoggiorno * 10;
+
+        dimmerIntensityStanza = lampadinaStanza.GetComponent<Light>().intensity;
+        dimmerStanza.text = "" + dimmerIntensityStanza * 10;
+
+    }
+
+    void Update()
+    {
+        //monitoraggio del comportamento delle lampadine: se vengono spente/accese dalla web app, poniamo il booleano a false/true 
+        //in modo da sincronizzare il comportamento dalla web app e della simulazione
         if (lampadinaIngresso.GetComponent<Light>().enabled)
             onIngresso = true;
         else if (!lampadinaIngresso.GetComponent<Light>().enabled)
@@ -76,10 +95,9 @@ public class InterruttoriController : MonoBehaviour
         else if (!abat2.GetComponent<Light>().enabled)
             onAbat2 = false;
 
-        mqtt = GameObject.FindGameObjectWithTag("mqtt");
-
+        //nel caso venga cambiata intensità dalla web app, così si aggiorna sul muro
         dimmerIntensityIngresso = lampadinaIngresso.GetComponent<Light>().intensity;
-        dimmerIngresso.text = "" + dimmerIntensityIngresso*10;
+        dimmerIngresso.text = "" + dimmerIntensityIngresso * 10;
 
         dimmerIntensitySoggiorno = lampadinaSoggiorno.GetComponent<Light>().intensity;
         dimmerSoggiorno.text = "" + dimmerIntensitySoggiorno * 10;
@@ -87,10 +105,6 @@ public class InterruttoriController : MonoBehaviour
         dimmerIntensityStanza = lampadinaStanza.GetComponent<Light>().intensity;
         dimmerStanza.text = "" + dimmerIntensityStanza * 10;
 
-    }
-
-    void Update()
-    {
         Command cmd = new Command();
         cmd.type = 0;
         //Check if Mouse Button is pressed
