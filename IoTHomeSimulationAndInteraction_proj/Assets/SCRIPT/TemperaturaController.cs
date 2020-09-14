@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 public class TemperaturaController : MonoBehaviour
 {
-    public Text soggiorno, stanza, cucina, bagno, ingresso;
-    public static int[] roomTemperature = { 10, 23, 23, 23, 23 };
+    public Text soggiorno, stanza;
+    public static int[] roomTemperature = { 23, 23, 23, 23, 23 };
     private float diffusion, incremento, positionDifference, counter;
     private float[]initialPositionAir, finalPositionAir;
     private bool checkPositionSogg, checkPositionStan, tempPlus, resetTempSogg;
@@ -19,11 +19,11 @@ public class TemperaturaController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        soggiorno.text = soggiorno.text + roomTemperature[0] + "°C";
-        stanza.text = stanza.text + roomTemperature[1] + "°C";
-        cucina.text = cucina.text + roomTemperature[2] + "°C";
-        bagno.text = bagno.text + roomTemperature[3] + "°C";
-        ingresso.text = ingresso.text + roomTemperature[4] + "°C";
+        //soggiorno.text = soggiorno.text + roomTemperature[0] + "°C";
+        //stanza.text = stanza.text + roomTemperature[1] + "°C";
+        //cucina.text = cucina.text + roomTemperature[2] + "°C";
+        //bagno.text = bagno.text + roomTemperature[3] + "°C";
+        //ingresso.text = ingresso.text + roomTemperature[4] + "°C";
 
         checkPositionSogg = false;
         finalPositionAir = new float[2];
@@ -80,7 +80,7 @@ public class TemperaturaController : MonoBehaviour
         positionDifference = initialPositionAir[index] - finalPositionAir[index];
         if (CondizionatoreController.isOn[index])
         {
-            print("calcoiamo" + roomTemperature[index]+","+CondizionatoreController.conditionerTemperature[0]);
+            print("calcoiamo"+index+";;;" + roomTemperature[index]+","+CondizionatoreController.conditionerTemperature[index]);
             //diffusion è la variabile che ci indica la differenza di temperature: maggiore è la differenza, più tempo ci vorrà affinchè nella stanza venga raggiunta la temp. scelta sul condizionatore
             if (CondizionatoreController.conditionerTemperature[index] > roomTemperature[index])
             {
@@ -212,10 +212,10 @@ public class TemperaturaController : MonoBehaviour
                     }
 
                     if (room == 0)
-                        roomText[room].text = "SOGGIORNO: " + roomTemperature[room] + "°C";
+                        roomText[room].text = "temperatura: " + roomTemperature[room] + "°C";
 
                     else if (room == 1)
-                        roomText[room].text = "STANZA: " + roomTemperature[room] + "°C";
+                        roomText[room].text = "temperatura: " + roomTemperature[room] + "°C";
                     //print("ecco"+incremento);
                 }
             }
@@ -241,10 +241,10 @@ public class TemperaturaController : MonoBehaviour
                     }
 
                     if (room == 0)
-                        roomText[room].text = "SOGGIORNO: " + roomTemperature[room] + "°C";
+                        roomText[room].text = "temperatura: " + roomTemperature[room] + "°C";
 
                     else if (room == 1)
-                        roomText[room].text = "STANZA: " + roomTemperature[room] + "°C";
+                        roomText[room].text = "temperatura: " + roomTemperature[room] + "°C";
                     //print("ecco"+incremento);
                 }
             }

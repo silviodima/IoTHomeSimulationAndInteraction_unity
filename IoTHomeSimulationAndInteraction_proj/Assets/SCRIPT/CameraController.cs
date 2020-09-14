@@ -26,11 +26,12 @@ public class CameraController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        //
+
         float moverHorizontal = Input.GetAxis("Horizontal");
         float moverVertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moverHorizontal, 0.0f, moverVertical);
+
 
         //il click del tasto sinistro del mouse stoppa immediatamente il movimento dell'oggetto
         if (Input.GetMouseButtonDown(0))
@@ -47,10 +48,16 @@ public class CameraController : MonoBehaviour
             rb.AddForce(movement * speed);
         }
 
-        yaw += speedH * Input.GetAxis("Mouse X");
-        pitch -= speedV * Input.GetAxis("Mouse Y");
+        //yaw += speedH * Input.GetAxis("Mouse X");
+        //pitch -= speedV * Input.GetAxis("Mouse Y");
 
         //transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        //  float x = Input.GetAxis("Horizontal");
+        //float z = Input.GetAxis("Vertical");
+
+        //Vector3 move = transform.right * x + transform.forward * z;
+
+        //controller.Move(move * speed * Time.deltaTime);
         isMoving();
     }
 

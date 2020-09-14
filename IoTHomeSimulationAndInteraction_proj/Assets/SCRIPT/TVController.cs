@@ -83,7 +83,7 @@ public class TVController : MonoBehaviour
         else room = 1;
         if (player.isPlaying)
         {
-            print("OK: CANALE" + action);
+            //print("OK: CANALE" + action);
             if (action == 1)
             {
                 player.clip = channel1;

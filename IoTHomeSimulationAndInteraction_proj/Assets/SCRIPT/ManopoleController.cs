@@ -72,7 +72,7 @@ public class ManopoleController : MonoBehaviour
                         onFornello1 = false;
                         cmd.action = "false";
                         cmd.id = Int32.Parse(fornello1.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -87,7 +87,7 @@ public class ManopoleController : MonoBehaviour
                         rayCastHit.collider.transform.rotation = Quaternion.Euler(30, 0, 0);
                         cmd.action = "true";
                         cmd.id = Int32.Parse(fornello1.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -106,7 +106,7 @@ public class ManopoleController : MonoBehaviour
                         onFornello2 = false;
                         cmd.action = "false";
                         cmd.id = Int32.Parse(fornello1.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -121,7 +121,7 @@ public class ManopoleController : MonoBehaviour
                         rayCastHit.collider.transform.rotation = Quaternion.Euler(30, 0, 0);
                         cmd.action = "true";
                         cmd.id = Int32.Parse(fornello2.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -140,7 +140,7 @@ public class ManopoleController : MonoBehaviour
                         onFornello3 = false;
                         cmd.action = "false";
                         cmd.id = Int32.Parse(fornello3.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -155,7 +155,7 @@ public class ManopoleController : MonoBehaviour
                         rayCastHit.collider.transform.rotation = Quaternion.Euler(30, 0, 0);
                         cmd.action = "true";
                         cmd.id = Int32.Parse(fornello3.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -174,7 +174,7 @@ public class ManopoleController : MonoBehaviour
                         onFornello4 = false;
                         cmd.action = "false";
                         cmd.id = Int32.Parse(fornello4.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);
@@ -189,7 +189,7 @@ public class ManopoleController : MonoBehaviour
                         rayCastHit.collider.transform.rotation = Quaternion.Euler(30, 0, 0);
                         cmd.action = "true";
                         cmd.id = Int32.Parse(fornello4.tag);
-                        cmd.component = "l";
+                        cmd.component = "f";
                         cmd.cmd = "switch";
 
                         string toJson = JsonUtility.ToJson(cmd);

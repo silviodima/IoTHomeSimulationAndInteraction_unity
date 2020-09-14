@@ -16,7 +16,8 @@ public class MqttController : MonoBehaviour
 {
     public MqttClient client;
     //public string brokerHostname = "192.168.1.112";
-    public string brokerHostname = "127.0.0.1";
+    public string brokerHostname = "51.141.103.161";
+    //public string brokerHostname = "127.0.0.1";
     public int brokerPort = 1883;
     public string userName = "test";
     public string password = "test";
@@ -99,7 +100,7 @@ public class MqttController : MonoBehaviour
             //print("ID:" + cmd.id + cmd.action);
             if (cmd.cmd.Equals("switch"))
             {
-                print("sto qua");
+                //print("sto qua");
                 lampController.GetComponent<LampController>().switchLamp(cmd.id, cmd.action);
             }
 
@@ -114,7 +115,7 @@ public class MqttController : MonoBehaviour
         if (actionBlind)
         {
             actionBlind = false;
-            print("ID:" + cmd.action);
+            //print("ID:" + cmd.action);
             //Task.Factory.StartNew(() => blindController.GetComponent<BlindController>().move(10, Int32.Parse("100")));
             blindController.GetComponent<BlindController>().move(cmd.id, Int32.Parse(cmd.action));
             //new Thread(delegate ()
@@ -140,12 +141,12 @@ public class MqttController : MonoBehaviour
         if (actionSensor)
         {
             actionSensor = false;
-            sensori.GetComponent<Sensori>().getLightSensor();
+            sensori.GetComponent<Sensori>().getLightSensor(true);
         }
 
        if(actionTV)
         {
-            print("CMD:" + cmd.cmd + "\nACTION:" + cmd.action);
+            //print("CMD:" + cmd.cmd + "\nACTION:" + cmd.action);
             actionTV = false;
             if (cmd.cmd.Equals("switch"))
             {
@@ -243,21 +244,21 @@ public class MqttController : MonoBehaviour
             //lampadine o fornelli
             if (cmd.id <= 9 || cmd.id>=14 && cmd.id<=17 )
             {
-                print("lampadine");
+                //print("lampadine");
                 actionLamp = true;
             }
 
             //persiane
             if (cmd.id >= 10 && cmd.id<=13 || cmd.id==22)
             {
-                print("persiane"+cmd.action);
+                //print("persiane"+cmd.action);
                 actionBlind = true;
             }
 
             //condizionatori
             if (cmd.id == 18 || cmd.id == 19)
             {
-                print("condizionatori");
+                //print("condizionatori");
                 actionConditioner = true;
             }
 
@@ -265,7 +266,7 @@ public class MqttController : MonoBehaviour
             //TV
             if (cmd.id==20 || cmd.id==21)
             {
-                print("TV");
+                //print("TV");
                 actionTV = true;
             }
         }
@@ -273,7 +274,7 @@ public class MqttController : MonoBehaviour
         //se cmd.type ==  1, è richiesto l'invio dei dati dei sensori
         if(cmd.type==1)
         {
-            print("sensori");
+            //print("sensori");
             actionSensor = true;
         }
 

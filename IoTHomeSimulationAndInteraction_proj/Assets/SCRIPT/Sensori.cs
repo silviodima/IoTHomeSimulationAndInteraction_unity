@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Sensori : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class Sensori : MonoBehaviour
     private RenderTexture[] textures, tmpTextures, previous;
     private Texture2D[] tmp2Dtextures;
     private Collider cameraCollider, ingressoCollider;
+
+    public Text textSoggiorno, textStanza, textCucina, textBagno, textIngresso, TemperaturaSoggiorno, TemperaturaStanza, TemperaturaCucina, TemperaturaBagno, TemperaturaIngresso;
+
     //private float lightLevel;
     // private const float DARK = 2876222f, PENUMBRA = 3082577f, LIGHT_ON = 6331760f, LIGHTON_BLINDOFF = 6370659f;
 
@@ -51,11 +55,15 @@ public class Sensori : MonoBehaviour
         mqtt = GameObject.FindGameObjectWithTag("mqtt");
         cameraCollider = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Collider>();
         ingressoCollider = GameObject.FindGameObjectWithTag("ingressoCollider").GetComponent<Collider>();
+
     }
 
     // Update is called once per frame
     void Update()
-    {/*
+    {
+        getLightSensor(false);
+
+        /*
         for (int i = 0; i < textures.Length; i++)
         {
             tmpTextures[i] = RenderTexture.GetTemporary(textures[i].width, textures[i].height, 0, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);
@@ -123,7 +131,7 @@ public class Sensori : MonoBehaviour
            }*/
     }
 
-    public void getLightSensor()
+    public void getLightSensor(bool publish)
     {
         toSend = new toJson();
         toSend.type = 2;
@@ -215,11 +223,11 @@ public class Sensori : MonoBehaviour
          string toJson = JsonHelper.ToJson(msg, true);
          print("" + toJson);
          mqtt.GetComponent<MqttController>().Publish("test", toJson);*/
-         getMovementSensor();
+         getMovementSensor(publish);
 
     }
 
-    public void getMovementSensor()
+    public void getMovementSensor(bool publish)
     {
         for(int i =5; i<10;i++)
         {
@@ -252,14 +260,14 @@ public class Sensori : MonoBehaviour
 
         }
 
-        getNoiseSensor();
+        getNoiseSensor(publish);
     }
 /*per quanto riguarda il rumore, avevo pensato a:
 25 : camera in movimento || condizionatore acceso (questo vale solo per le stanze che ce l'hanno ovviamente) || tv con volume max 5 (per le stanze che ce l'hanno)
 50: 2 condizioni fra (camera in movimento, condizionatore acceso, tv con volume max 5)
 75: tutte e 3 le condizioni precedenti
 100: tv con volume da 6 in su, indipendentemente da camera e condizionatori*/
-    public void getNoiseSensor()
+    public void getNoiseSensor(bool publish)
     {
         //stiamo riempiendo l'array sensori[]: le celle da 10 a 15 identificano i valori associati al sensore di rumore
         //in particolare: 10 soggiorno, 11 stanza, 12 cucina , 13 bagno, 14 ingresso
@@ -354,10 +362,10 @@ public class Sensori : MonoBehaviour
 
         }
 
-        getTemperatureSensor();
+        getTemperatureSensor(publish);
     }
 
-    public void getTemperatureSensor()
+    public void getTemperatureSensor(bool publish)
     {
         for (int i = 15; i < 20; i++)
         {
@@ -394,9 +402,46 @@ public class Sensori : MonoBehaviour
         string toJson = JsonUtility.ToJson(toSend);
         foreach (Command sensore in toSend.sensore)
         {
-            print("SENSORE"+sensore.ToString());
+            //print("SENSORE"+sensore.ToString());
         }
-        mqtt.GetComponent<MqttController>().Publish("unity", toJson);
+        if (publish)
+        {
+            mqtt.GetComponent<MqttController>().Publish("unity", toJson);
+        }
+        updateSensorView();
+    }
+
+    void updateSensorView()
+    {
+
+        textSoggiorno.text = "SOGGIORNO: luce=" + toSend.sensore[0].valore + ", movimento=" + toSend.sensore[5].valore + ",\n rumore =" +
+            toSend.sensore[10].valore;
+
+        TemperaturaSoggiorno.text = "temperatura=" + toSend.sensore[15].valore + "°C.";
+
+        textStanza.text = "STANZA: luce=" + toSend.sensore[1].valore + ", movimento=" + toSend.sensore[6].valore + ",\n rumore =" +
+            toSend.sensore[11].valore;
+
+        TemperaturaStanza.text = "temperatura=" + toSend.sensore[16].valore + "°C.";
+
+        textCucina.text = "CUCINA: luce=" + toSend.sensore[2].valore + ", movimento=" + toSend.sensore[7].valore + ",\n rumore =" +
+            toSend.sensore[12].valore;
+
+        TemperaturaCucina.text = "temperatura=" + toSend.sensore[17].valore + "°C.";
+
+        textBagno.text = "BAGNO: luce=" + toSend.sensore[3].valore + ", movimento=" + toSend.sensore[8].valore + ",\n rumore =" +
+            toSend.sensore[13].valore;
+
+        TemperaturaBagno.text = "temperatura=" + toSend.sensore[18].valore + "°C.";
+
+        textIngresso.text = "INGRESSO: luce=" + toSend.sensore[4].valore + ", movimento=" + toSend.sensore[9].valore + ",\n rumore =" +
+         toSend.sensore[14].valore;
+
+        TemperaturaIngresso.text = "temperatura=" + toSend.sensore[19].valore + "°C.";
+
+
+
+
     }
 
     /*  public static class JsonHelper

@@ -32,7 +32,7 @@ public class CondizionatoreController : MonoBehaviour
     //vettori che salveranno la posizione iniziale degli oggetti precedenti
     private Vector3 airSoggiornoPos, airStanzaPos;
 
-    private int room;
+    public static int room;
 
 
     private AudioSource rumoreCondSoggiorno, rumoreCondStanza;
@@ -77,12 +77,12 @@ public class CondizionatoreController : MonoBehaviour
 
     public void switchConditioner(int id, string action)
     {
-        print("switch condizionatore");
+        //print("switch condizionatore");
         if (action.Equals("true"))
         {
             if (id == 18)
             {
-                print("l'hai acceso");
+                //print("l'hai acceso");
                 //index 0 per condizionatore del soggiorno
                 isOn[0] = true;
                 //aggiornamento della temperatura mostrata sul condizionatore
@@ -153,6 +153,7 @@ public class CondizionatoreController : MonoBehaviour
             //condizionatore del soggiorno
             if(id == 18)
             {
+                //print("La temperatura dev'essere " + action+room);
                 soggiorno.text = action + "°C";
                 conditionerTemperature[0] = action;
 
@@ -163,7 +164,7 @@ public class CondizionatoreController : MonoBehaviour
                 //animatorSoggiorno.SetBool("diffusion", true);
                 //print("animatorbool ora:" + animatorSoggiorno.GetBool("diffusion"));
                 //checkTemperature = true;
-                Task.Delay(new TimeSpan(0, 0, 5)).ContinueWith(o => { checkTemperature = true; });
+                Task.Delay(new TimeSpan(0, 0, 3)).ContinueWith(o => { checkTemperature = true; });
 
 
 
@@ -172,7 +173,7 @@ public class CondizionatoreController : MonoBehaviour
 
             else
             {
-                print("ACCENDILO PRIMA" + id);
+                //print("ACCENDILO PRIMA" + id);
             }
         }
 
@@ -190,13 +191,13 @@ public class CondizionatoreController : MonoBehaviour
                 //animatorSoggiorno.SetBool("diffusion", true);
                 //print("animatorbool ora:" + animatorSoggiorno.GetBool("diffusion"));
                 //checkTemperature = true;
-                Task.Delay(new TimeSpan(0, 0, 5)).ContinueWith(o => { checkTemperature = true; });
+                Task.Delay(new TimeSpan(0, 0, 3)).ContinueWith(o => { checkTemperature = true; });
 
             }
 
             else
             {
-                print("ACCENDILO PRIMA" + id);
+                //print("ACCENDILO PRIMA" + id);
             }
         }
     }
