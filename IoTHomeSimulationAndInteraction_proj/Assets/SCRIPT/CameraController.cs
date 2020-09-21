@@ -7,10 +7,13 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float speed;
+    public float speed = 1.0f;
     private Rigidbody rb;
     public float speedH = 2.0f;
     public float speedV = 2.0f;
+    float rotation = 0f;
+    float x, y, z;
+    public bool direction = true;
 
     private float yaw = 0.0f;
     private float pitch = 0.0f;
@@ -23,30 +26,56 @@ public class CameraController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         movementValues = new float[5];
         moving = false;
-    }
-    void FixedUpdate()
+        x = transform.position.x;
+        y = transform.position.y;
+        z =0;
+       }
+    void Update()
     {
+        
+            if (Input.GetKey(KeyCode.RightArrow))
+            {
+                y = Rotation(1);
+                transform.localEulerAngles=new Vector3(x, y, z);
+                
+            }
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                y = -Rotation(-1);
+                transform.localEulerAngles=new Vector3(x, y, z);
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                x = x + speed;
+                transform.Translate(new Vector3(x, y, z));
+            }
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                x = x - speed;
+                transform.Translate(new Vector3(x, y, z));
+            }
+        
 
-        float moverHorizontal = Input.GetAxis("Horizontal");
-        float moverVertical = Input.GetAxis("Vertical");
+        // float moverHorizontal = Input.GetAxis("Horizontal");
+        //float moverVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moverHorizontal, 0.0f, moverVertical);
+        // Vector3 movement = new Vector3(moverHorizontal, 0.0f, moverVertical);
 
 
         //il click del tasto sinistro del mouse stoppa immediatamente il movimento dell'oggetto
-        if (Input.GetMouseButtonDown(0))
-        {
-            rb.velocity = Vector3.zero;
-           // transform.LookAt(transform);
-            //transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X") * speed);
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //   rb.velocity = Vector3.zero;
+        // transform.LookAt(transform);
+        //transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X") * speed);
 
-        }
+        // }
 
         //se non viene effettuato nessun click, l'oggetto si muove tramite la pressione dei tasti freccia
-        else
-        {
-            rb.AddForce(movement * speed);
-        }
+        //  else
+        //  {
+        //      rb.AddForce(movement * speed);
+        //  }
 
         //yaw += speedH * Input.GetAxis("Mouse X");
         //pitch -= speedV * Input.GetAxis("Mouse Y");
@@ -59,6 +88,14 @@ public class CameraController : MonoBehaviour
 
         //controller.Move(move * speed * Time.deltaTime);
         isMoving();
+    }
+
+    float Rotation(float y)
+    {
+        //se secondo te c'è bisogno di rallentare o velocizzare la rotazione, modifica il numero dopo lo slash.
+        rotation += (speed * 10);
+        if (rotation >= 360f) rotation -= 360f;
+        return direction ? y : -y;
     }
 
     private void OnTriggerEnter(Collider other)

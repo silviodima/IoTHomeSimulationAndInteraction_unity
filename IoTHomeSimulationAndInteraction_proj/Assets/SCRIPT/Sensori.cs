@@ -414,30 +414,30 @@ public class Sensori : MonoBehaviour
     void updateSensorView()
     {
 
-        textSoggiorno.text = "SOGGIORNO: luce=" + toSend.sensore[0].valore + ", movimento=" + toSend.sensore[5].valore + ",\n rumore =" +
-            toSend.sensore[10].valore;
+        textSoggiorno.text = "SOGGIORNO:\n luce=" + toSend.sensore[0].valore + ", movimento=" + toSend.sensore[5].valore + ", rumore =" +
+            toSend.sensore[10].valore+ ", temperatura=" + toSend.sensore[15].valore + "°C."; ;
 
-        TemperaturaSoggiorno.text = "temperatura=" + toSend.sensore[15].valore + "°C.";
+      //  TemperaturaSoggiorno.text = "temperatura=" + toSend.sensore[15].valore + "°C.";
 
-        textStanza.text = "STANZA: luce=" + toSend.sensore[1].valore + ", movimento=" + toSend.sensore[6].valore + ",\n rumore =" +
-            toSend.sensore[11].valore;
+        textStanza.text = "STANZA:\n luce=" + toSend.sensore[1].valore + ", movimento=" + toSend.sensore[6].valore + ", rumore =" +
+            toSend.sensore[11].valore+ ", temperatura=" + toSend.sensore[16].valore + "°C.";
 
-        TemperaturaStanza.text = "temperatura=" + toSend.sensore[16].valore + "°C.";
+     //   TemperaturaStanza.text = "temperatura=" + toSend.sensore[16].valore + "°C.";
 
-        textCucina.text = "CUCINA: luce=" + toSend.sensore[2].valore + ", movimento=" + toSend.sensore[7].valore + ",\n rumore =" +
-            toSend.sensore[12].valore;
+        textCucina.text = "CUCINA:\n luce=" + toSend.sensore[2].valore + ", movimento=" + toSend.sensore[7].valore + ", rumore =" +
+            toSend.sensore[12].valore + ", temperatura=" + toSend.sensore[17].valore + "°C.";
 
-        TemperaturaCucina.text = "temperatura=" + toSend.sensore[17].valore + "°C.";
+      //  TemperaturaCucina.text = "temperatura=" + toSend.sensore[17].valore + "°C.";
 
-        textBagno.text = "BAGNO: luce=" + toSend.sensore[3].valore + ", movimento=" + toSend.sensore[8].valore + ",\n rumore =" +
-            toSend.sensore[13].valore;
+        textBagno.text = "BAGNO:\n luce=" + toSend.sensore[3].valore + ", movimento=" + toSend.sensore[8].valore + ", rumore =" +
+            toSend.sensore[13].valore+ ", temperatura=" + toSend.sensore[18].valore + "°C.";
 
-        TemperaturaBagno.text = "temperatura=" + toSend.sensore[18].valore + "°C.";
+        //TemperaturaBagno.text = "temperatura=" + toSend.sensore[18].valore + "°C.";
 
-        textIngresso.text = "INGRESSO: luce=" + toSend.sensore[4].valore + ", movimento=" + toSend.sensore[9].valore + ",\n rumore =" +
-         toSend.sensore[14].valore;
+        textIngresso.text = "INGRESSO:\n luce=" + toSend.sensore[4].valore + ", movimento=" + toSend.sensore[9].valore + ", rumore =" +
+         toSend.sensore[14].valore + ", temperatura=" + toSend.sensore[19].valore + "°C.";
 
-        TemperaturaIngresso.text = "temperatura=" + toSend.sensore[19].valore + "°C.";
+        //TemperaturaIngresso.text = 
 
 
 
